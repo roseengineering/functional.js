@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Functional.js</title>
+<link rel="shortcut icon" href="data:,">
+<style>pre { margin: .1rem 0 }</style>
+<script src="functional.js"></script>
+<script>
+    function example0(name){
+        document.write('<li>');
+        document.write('<p><b>' + name + '</b></p>');
+    }
+    function example1(e, bool){
+        document.write('<pre>&gt; ' + e + '</pre>');
+        document.write('<div><i>' + JSON.stringify(eval(e)) + '</i></div>');
+        if (!bool) document.write('</li>');
+    }
+    function example2(bool){
+        document.write('<pre>&gt; that</pre>');
+        document.write('<div><i>' + JSON.stringify(that) + '</i></div>');
+        if (!bool) document.write('</li>');
+    }
+    function example_(e){
+        example1(e);
+        example2();
+    }
+    function example(name, e, bool){
+        example0(name);
+        example_(e);
+    }
+</script>
+    <h1>README</h1>
+    <p>
+    The functional.js library is an alternative to
+    libraries such as underscore.js and lodash.js.
+    It is of very minimal size.  It translates modern javascript methods into
+    their functional representation and maps them to the global _ object.
+    </p>
+
+    <h4><i>
+    The following Array prototype functions are mapped to the _ object:
+    </i></h4>
+
+    <ol>
+    <script>example('every', '_.every(that = [1,2,3], function(){\n  return true;\n})')</script>
+    <script>example('some', '_.some(that = [1,2,3], function(x){\n  return x === 2;\n})')</script>
+    <script>example('filter', '_.filter(that = [1,2,3], function(){\n  return true;\n})')</script>
+    <script>example('map', '_.map(that = [1,2,3], function(x){\n  return 2*x;\n})')</script>
+    <script>example('reduce', '_.reduce(that = [1,2,3], function(memo, x){\n  return memo/x;\n})')</script>
+    <script>example('reduceRight', '_.reduceRight(that = [1,2,3], function(memo, x){\n  return memo/x;\n})')</script>
+    <script>example('forEach', '_.forEach(that = [1,2,3], function(x){\n  that = x;\n})')</script>
+
+    <script>example('concat', '_.concat(that = [1,2,3], 4)')</script>
+    <script>example('join', '_.join(that = [1,2,3], "-")')</script>
+    <script>example('indexOf', '_.indexOf(that = [1,2,2,3], 2)')</script>
+    <script>example('lastIndexOf', '_.lastIndexOf(that = [1,2,2,3], 2)')</script>
+    <script>example('reverse', '_.reverse(that = [1,2,3])')</script>
+    <script>example('pop', '_.pop(that = [1,2,3])')</script>
+    <script>example('shift', '_.shift(that = [1,2,3])')</script>
+    <script>example('sort', '_.sort(that = [3,2,1])')</script>
+    <script>example('slice', '_.slice(that = [1,2,3],1)')</script>
+    </ol>
+
+
+    <h4><i>
+    The follow Array prototype functions are also mapped to the _ object.  However they return the first argument
+    passed instead of the result of the mapped function:
+    </i></h4>
+
+    <ol>
+    <script>example('push', '_.push(that = [1,2,3], 4)')</script>
+    <script>example('unshift', '_.unshift(that = [1,2,3], 4)')</script>
+    <script>example('splice', '_.splice(that = [1,2,3,4,5,6], 2, 2, "a", "b")')</script>
+    </ol>
+
+    <h4><i>
+    The following Object functions are mapped to the _ object:
+    </i></h4>
+
+    <ol>
+    <script>example('create', '_.create(that = { a: 1 })')</script>
+    <script>example('is', '_.is(that = { a: 1 }, that)')</script>
+    <script>example('keys', '_.keys(that = { a: 1, b: 2 })')</script>
+    </ol>
+
+    <h4><i>
+    The following Object prototype function is mapped to the _ object:
+    </i></h4>
+
+    <ol>
+        <script>example('hasOwnPrototype</b><p> Mapped to "has".</p><b>', '_.has(that = { a: 1 }, "a")')</script>
+    </ol>
+
+    <h4><i>
+    The following Function prototype function is mapped to the _ object:
+    </i></h4>
+
+    <ol>
+    <script>
+    example0('bind');
+    example1('_.bind(function(){\n  return this;\n}, { a: 1 })()');
+    </script>
+    </ol>
+
+    <h4><i>
+    The following Array object function is mapped to the _ object:
+    </i></h4>
+
+    <ol>
+    <script>example('isArray', '_.isArray(that = { 0: 1, length: 1 })')</script>
+    </ol>
+
+    <h4><i>
+    The following are custom functions added to the _ object:
+    </i></h4>
+
+    <ol>
+        <script>example0('each</b><p> Converts the first argument to an array, if not already.  It then invokes the method forEach over it with the remaining parameters.  Returns the first argument.</p><p> If the first argument is a pseudo array then it is converted to an array of values, otherwise it is converted to an array of keys. </p><b>');
+            example_('_.each(that = { 0: 1, 1: 2, 2: 3, length: 3 }, function(x){\n  that = x;\n})', true);
+            example_('_.each(that = { a: 1, b: 2, c: 3 }, function(x){\n  that = x;\n})');
+        </script>
+        
+        <script>
+            example0('toArray</b><p> Returns the first argument after converting it to an array, if not already.  </p><p> If the first argument is a pseudo array then it is converted to an array of values, otherwise it is converted to an array of keys. </p><b>');
+            example_('_.toArray(that = { 0: 1, 1: 2, 2: 3, length: 3 })', true)
+            example_('_.toArray(that = { a: 1, b: 2, c: 3 })');
+        </script>
+
+        <script>example('extend', '_.extend(that = { a: 1 }, { a: 2, b: 3 }, { c: 4 })')</script>  
+        <script>example('clone', '_.clone(that = { a: 2, b: 3 }, { c: 4 })')</script>  
+        <script>
+            example0('size');
+            example_('_.size(that = { a: 2, b: 3 })', true);
+            example_('_.size(that = { length: 4 })');
+        </script>  
+        
+        <script>
+            example0('call'); 
+            example1('_.call(function(x){\n  return 2 * x;\n}, 5)')
+        </script>  
+    </ol>
+    
+</html>
+
